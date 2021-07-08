@@ -41,6 +41,9 @@ export default {
     name: "fade",
     mode: "out-in"
   },
+  generate: {
+    fallback: true
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
