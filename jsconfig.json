@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    		"types": ["@nuxt/types", "@nuxtclub/feathericons"],
-
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"],
