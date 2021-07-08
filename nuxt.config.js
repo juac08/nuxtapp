@@ -18,7 +18,7 @@ export default {
   loading: { color: "blue", height: "4px", duration: 5000 },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: "~/plugins/chart.js" }],
+  plugins: [{ src: "~/plugins/chart.js", ssr: false }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -32,7 +32,8 @@ export default {
     "@nuxtjs/axios",
     "@nuxtclub/feathericons"
   ],
-
+  target: "static",
+  ssr: false,
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
