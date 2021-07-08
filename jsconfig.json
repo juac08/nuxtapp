@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    		"types": ["@nuxt/types", "@nuxtclub/feathericons"],
+
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "~~/*": ["./*"],
+      "@@/*": ["./*"],
+      
+	
+
+    }
+  },
+  "exclude": ["node_modules", ".nuxt", "dist"],
+  
+
+}
