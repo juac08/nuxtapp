@@ -296,7 +296,7 @@ export default {
 .add-task-btn {
   width: 100%;
   padding: 0.75rem;
-  background: #5f6cff;
+  background: #0ea5e9;
   color: #ffffff;
   border: none;
   border-radius: 0.5rem;
@@ -311,9 +311,9 @@ export default {
 }
 
 .add-task-btn:hover {
-  background: #4c5aee;
+  background: #0284c7;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(95, 108, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 /* Expand Transition */

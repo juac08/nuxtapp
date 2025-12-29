@@ -347,7 +347,7 @@ export default {
 .setting-input:focus,
 .setting-select:focus {
   outline: none;
-  border-color: #5f6cff;
+  border-color: #0ea5e9;
   box-shadow: 0 0 0 3px rgba(95, 108, 255, 0.1);
 }
 
@@ -412,7 +412,7 @@ export default {
 }
 
 input:checked + .toggle-slider {
-  background-color: #5f6cff;
+  background-color: #0ea5e9;
 }
 
 input:checked + .toggle-slider:before {
@@ -448,14 +448,14 @@ input:checked + .toggle-slider:before {
 }
 
 .btn-primary {
-  background: #5f6cff;
+  background: #0ea5e9;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #4c5fd5;
+  background: #0284c7;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(95, 108, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 /* Scrollbar */

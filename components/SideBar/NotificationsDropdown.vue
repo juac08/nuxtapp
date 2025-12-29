@@ -320,7 +320,7 @@ export default {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #5f6cff;
+  background: #0ea5e9;
   flex-shrink: 0;
 }
 

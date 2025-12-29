@@ -84,7 +84,7 @@
               <div class="department-info">
                 <div
                   class="department-color"
-                  :style="{ background: dept.color || '#5f6cff' }"
+                  :style="{ background: dept.color || '#0ea5e9' }"
                 ></div>
                 <div class="department-details">
                   <span class="department-name">{{ dept.name }}</span>
@@ -145,7 +145,7 @@ export default {
       newDepartment: {
         id: "",
         name: "",
-        color: "#5f6cff",
+        color: "#0ea5e9",
       },
     };
   },
@@ -163,7 +163,7 @@ export default {
       this.newDepartment = {
         id: "",
         name: "",
-        color: "#5f6cff",
+        color: "#0ea5e9",
       };
     },
     addDepartment() {
@@ -328,7 +328,7 @@ export default {
 
 .form-group input[type="text"]:focus {
   outline: none;
-  border-color: #5f6cff;
+  border-color: #0ea5e9;
   box-shadow: 0 0 0 3px rgba(95, 108, 255, 0.1);
 }
 
@@ -342,7 +342,7 @@ export default {
 }
 
 .color-input:hover {
-  border-color: #5f6cff;
+  border-color: #0ea5e9;
 }
 
 .hint {
@@ -362,13 +362,13 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #5f6cff;
+  background: #0ea5e9;
   color: #ffffff;
 }
 
 .btn-add:hover {
-  background: #4c5aee;
-  box-shadow: 0 4px 12px rgba(95, 108, 255, 0.3);
+  background: #0284c7;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 /* Departments List */

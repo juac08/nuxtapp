@@ -413,15 +413,15 @@ export default {
 
 .icon-btn:hover {
   background: #f5f7fa;
-  border-color: #5f6cff;
-  color: #5f6cff;
+  border-color: #0ea5e9;
+  color: #0ea5e9;
 }
 
 .icon-btn .badge {
   position: absolute;
   top: -4px;
   right: -4px;
-  background: #5f6cff;
+  background: #0ea5e9;
   color: #ffffff;
   font-size: 0.625rem;
   font-weight: 600;
@@ -461,7 +461,7 @@ export default {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #5f6cff 0%, #7c88ff 100%);
+  background: linear-gradient(90deg, #0ea5e9 0%, #7c88ff 100%);
   border-radius: 999px;
   transition: width 0.3s ease;
 }
@@ -531,7 +531,7 @@ export default {
 
 .icon-action-btn:hover {
   background: #f5f7fa;
-  color: #5f6cff;
+  color: #0ea5e9;
 }
 
 .section-title {
@@ -559,7 +559,7 @@ export default {
 
 .settings-btn:hover {
   background: #f5f7fa;
-  color: #5f6cff;
+  color: #0ea5e9;
 }
 
 /* Projects */
@@ -587,11 +587,11 @@ export default {
 
 .project-item.active {
   background: rgba(95, 108, 255, 0.08);
-  border-left: 3px solid #5f6cff;
+  border-left: 3px solid #0ea5e9;
 }
 
 .project-item.active .project-name {
-  color: #5f6cff;
+  color: #0ea5e9;
   font-weight: 600;
 }
 
@@ -603,7 +603,7 @@ export default {
 }
 
 .project-dot.all {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
 }
 
 .project-name {
@@ -625,7 +625,7 @@ export default {
 
 .project-item.active .task-count {
   background: rgba(95, 108, 255, 0.1);
-  color: #5f6cff;
+  color: #0ea5e9;
 }
 
 /* Team */
@@ -662,7 +662,7 @@ export default {
 }
 
 .team-avatar.more-members {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
   display: flex;
   align-items: center;
   justify-content: center;

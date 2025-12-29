@@ -320,7 +320,7 @@ export default {
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #5f6cff;
+  border-color: #0ea5e9;
   box-shadow: 0 0 0 3px rgba(95, 108, 255, 0.1);
 }
 
@@ -345,13 +345,13 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #5f6cff;
+  background: #0ea5e9;
   color: #ffffff;
 }
 
 .btn-add:hover {
-  background: #4c5aee;
-  box-shadow: 0 4px 12px rgba(95, 108, 255, 0.3);
+  background: #0284c7;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 /* Members List */

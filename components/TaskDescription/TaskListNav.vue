@@ -162,8 +162,8 @@ export default {
 
 .action-btn:hover {
   background: #f5f7fa;
-  border-color: #5f6cff;
-  color: #5f6cff;
+  border-color: #0ea5e9;
+  color: #0ea5e9;
 }
 
 .action-btn.success {
@@ -188,12 +188,12 @@ export default {
 }
 
 .action-btn.primary {
-  background: #5f6cff;
-  border-color: #5f6cff;
+  background: #0ea5e9;
+  border-color: #0ea5e9;
   color: #ffffff;
 }
 
 .action-btn.primary:hover {
-  background: #4c5aee;
+  background: #0284c7;
 }
 </style>

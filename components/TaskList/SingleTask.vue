@@ -100,18 +100,17 @@ export default {
   border-radius: 0.375rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid transparent;
+  border-left: 3px solid transparent;
   margin-bottom: 0.375rem;
 }
 
 .task-card:hover {
-  background: #f8f9fa;
-  transform: translateX(2px);
+  background: #f5f7fa;
 }
 
 .task-card.selected {
-  border-color: #5f6cff;
-  background: rgba(95, 108, 255, 0.03);
+  background: rgba(14, 165, 233, 0.08);
+  border-left: 3px solid #0ea5e9;
 }
 
 .task-card.completed {
@@ -157,8 +156,8 @@ export default {
 }
 
 .checkbox-custom.checked {
-  background: #5f6cff;
-  border-color: #5f6cff;
+  background: #0ea5e9;
+  border-color: #0ea5e9;
 }
 
 .checkbox-custom svg {
@@ -167,7 +166,7 @@ export default {
 }
 
 .task-checkbox:hover .checkbox-custom {
-  border-color: #5f6cff;
+  border-color: #0ea5e9;
 }
 
 /* Task Content */

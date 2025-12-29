@@ -24,12 +24,6 @@ export default defineNuxtConfig({
   // Global CSS
   css: ["~/assets/styles/main.css"],
 
-  // Plugins
-  plugins: [
-    // { src: "~/plugins/vuex.js", mode: "client" }, // Replaced with Pinia
-    // { src: "~/plugins/chart.js", mode: "client" } // Commented out - needs update for Nuxt 3/4
-  ],
-
   // Auto import components
   components: true,
 
