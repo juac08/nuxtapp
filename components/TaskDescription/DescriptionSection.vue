@@ -1,11 +1,7 @@
 <template>
-  <div>
-    <section class="item-3">
-      <div>
-        <TaskListNav />
-        <Description />
-      </div>
-    </section>
+  <div class="task-details-section">
+    <TaskListNav />
+    <Description />
   </div>
 </template>
 
@@ -20,8 +16,12 @@ export default {
 };
 </script>
 
-<style  scoped>
-.item-3 {
-  flex-grow: 1;
+<style scoped>
+.task-details-section {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 </style>

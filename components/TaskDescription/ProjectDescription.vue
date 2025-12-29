@@ -1,292 +1,495 @@
 <template>
-  <div class="project" v-if="selectedProject">
-    <div item-1>
-      <div v-html="$feathericons['check'].toSvg()" class="icon"></div>
-      <div class="container">
-        <div class="head item">
-          <h3>{{ selectedProject.title }}</h3>
-          <div class="date">
-            <span v-html="$feathericons['clock'].toSvg()" />
-            <p>{{ selectedProject.date }}</p>
-            <span
-              class="tag-user"
-              v-for="tag in selectedProject.tags"
-              :key="tag"
-            >
-              <p>{{ tag }}</p>
-            </span>
-          </div>
+  <div class="task-details-wrapper">
+    <!-- Task Header -->
+    <div class="task-header">
+      <div class="header-left">
+        <div
+          class="status-badge"
+          :class="
+            selectedProject && selectedProject.completed
+              ? 'completed'
+              : 'in-progress'
+          "
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+          </svg>
+          {{
+            selectedProject && selectedProject.completed
+              ? "Completed"
+              : "In Progress"
+          }}
+        </div>
+        <h2 class="task-title">
+          {{
+            (selectedProject && selectedProject.title) ||
+            "Write an article about design trends"
+          }}
+        </h2>
+        <div class="task-date">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          {{ (selectedProject && selectedProject.date) || "12 Mar, 2018" }}
         </div>
       </div>
     </div>
-    <transition name="fade" appear>
-      <div class="description item-2 message">
-        <p>{{ selectedProject.description }}</p>
-        <br />
-        <hr />
-        <br />
-        <div class="tag">
-          <input type="text" placeholder="Tag User" v-model.trim="newTag" />
-          <button
-            v-html="$feathericons['plus'].toSvg()"
-            class="t"
-            @click="addTag"
-          ></button>
-        </div>
 
-        <div class="comments item-3">
-          <div
-            class="comment"
-            v-for="(c, i) in selectedProject.comments"
-            :key="i"
+    <!-- Task Description -->
+    <div class="task-body">
+      <p class="description-text">
+        {{
+          (selectedProject && selectedProject.description) ||
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        }}
+      </p>
+
+      <!-- Activity Timeline -->
+      <div class="activity-section">
+        <div class="activity-item">
+          <span class="activity-user">Olka Nowak</span>
+          <span class="activity-text">assigned to Natalie Smith.</span>
+          <span class="activity-date">19 Feb, 2018</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-user">Olka Nowak</span>
+          <span class="activity-text">added to Marketing.</span>
+          <span class="activity-date">18 Feb, 2018</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-user">Olka Nowak</span>
+          <span class="activity-text">created task.</span>
+          <span class="activity-date">18 Feb, 2018</span>
+        </div>
+      </div>
+
+      <!-- Completion Notice -->
+      <div class="completion-notice">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span><strong>Natalie</strong> completed this task.</span>
+        <span class="completion-date">26 Feb, 2018</span>
+      </div>
+
+      <!-- Attachment -->
+      <div class="attachment-item">
+        <div class="attachment-icon">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
           >
-            <h5>
-              {{ setName }}: <span>{{ c.comment }}</span>
-            </h5>
-            <p>{{ c.date }}</p>
-          </div>
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            ></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
         </div>
-        <div>
-          <p>{{ fileobj.name }}</p>
+        <div class="attachment-info">
+          <div class="attachment-name">Article.docx</div>
+          <div class="attachment-meta">added 26 Feb, 2018</div>
+        </div>
+        <div class="attachment-actions">
+          <button class="icon-btn">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              ></path>
+            </svg>
+          </button>
+          <button class="icon-btn">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </button>
         </div>
       </div>
-    </transition>
+    </div>
 
-    <div class="item-4 input">
-      <div class="custom-btn">
-        <form @submit.prevent="addComment" class="form">
-          <input
-            type="text"
-            placeholder="Write a comment"
-            class="text"
-            v-model="comment"
-          />
-        </form>
-        <div>
-          <input id="custom" type="file" @change="selectedFile" />
-          <div class="f-label">
-            <label for="custom" class="file">
-              <div v-html="$feathericons['paperclip'].toSvg()"></div>
-            </label>
-          </div>
-        </div>
-        <button class="btn-submit" @click="upload">
-          <div v-html="$feathericons['share'].toSvg()"></div>
-        </button>
-      </div>
+    <!-- Comment Input -->
+    <div class="comment-input-section">
+      <input
+        type="text"
+        v-model="comment"
+        placeholder="Write a comment..."
+        class="comment-input"
+        @keyup.enter="addComment"
+      />
+      <button class="attach-btn">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"
+          ></path>
+        </svg>
+      </button>
+      <button class="send-btn" @click="addComment">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { useMainStore } from "~/stores/main";
+
 export default {
   data() {
     return {
-      comment: null,
-      fileobj: {},
-      newTag: "",
+      comment: "",
+      store: useMainStore(),
     };
   },
   computed: {
-    ...mapGetters(["selectedProject", "setName"]),
-    comments() {
-      return this.$store.getters.setComments;
-    },
-    projects() {
-      return this.$store.getters.pList;
+    selectedProject() {
+      return this.store?.selectedProject || null;
     },
   },
   methods: {
     addComment() {
-      this.$store.dispatch("setComment", {
-        comment: this.comment,
-        date: new Date().toDateString(),
-        id: this.selectedProject.id,
-      });
-      this.comment = "";
-    },
-    selectedFile(e) {
-      return (this.fileobj = e.target.files[0]);
-    },
-    upload() {
-      return console.log(this.fileobj);
-    },
-    addTag() {
-      if (this.newTag) {
-        this.$store.dispatch("setTag", {
+      if (this.comment.trim() && this.selectedProject) {
+        this.store.setComment({
           id: this.selectedProject.id,
-          tag: this.newTag,
+          comment: this.comment,
+          date: new Date().toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }),
         });
+        this.comment = "";
       }
-      this.newTag = "";
-      this.$router.push("/");
     },
   },
 };
 </script>
 
 <style scoped>
-.icon {
-  background: rgb(80, 120, 254);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  line-height: 50px;
-  border: 1px solid rgb(122, 121, 121);
-  color: white;
-  position: absolute;
-  margin-top: 1.5rem;
-  margin-left: 1rem;
-  text-align: center;
-}
-.input {
-  display: flex;
-  align-items: center;
-  outline-style: solid;
-  outline-width: 1px;
-  outline-color: rgb(234, 229, 229);
-  align-self: stretch;
-  height: 5rem;
-  margin-top: 6rem;
-}
-.text {
-  width: 100%;
-  height: 5.3rem;
-  padding: 30px;
-  border: none;
-  background: rgb(241, 242, 247);
-}
-.project {
-  padding: 30px 0;
+.task-details-wrapper {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  background: #ffffff;
+  overflow: hidden;
 }
-.title {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+/* Task Header */
+.task-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e4e7eb;
+}
+
+.status-badge {
+  display: inline-flex;
   align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
-.date {
+
+.status-badge.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.completed svg {
+  color: #10b981;
+}
+
+.status-badge.in-progress {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.in-progress svg {
+  color: #3b82f6;
+}
+
+.task-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.task-date {
   display: flex;
-  justify-content: left;
-  align-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #a3aec1;
+}
+
+.task-date svg {
+  color: #a3aec1;
+}
+
+/* Task Body */
+.task-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.description-text {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #4b5563;
+  margin: 0 0 2rem 0;
+}
+
+/* Activity Section */
+.activity-section {
+  margin-bottom: 2rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.activity-user {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.activity-text {
+  color: #6b7280;
+}
+
+.activity-date {
+  margin-left: auto;
+  color: #a3aec1;
+}
+
+/* Completion Notice */
+.completion-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #eff6ff;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+  color: #1e40af;
+}
+
+.completion-notice svg {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.completion-date {
+  margin-left: auto;
+  color: #60a5fa;
+}
+
+/* Attachment */
+.attachment-item {
+  display: flex;
+  align-items: center;
   gap: 1rem;
-}
-.form {
-  width: 100%;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  border: 1px solid #e4e7eb;
 }
 
-.container {
-  width: 100%;
-  padding: 20px;
+.attachment-icon {
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border-radius: 0.5rem;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  margin: 10px auto;
+  color: #5f6cff;
+  flex-shrink: 0;
 }
-.description {
-  max-width: 42rem;
-  min-height: 23.7rem;
-  line-height: 2rem;
-  margin: 10px auto;
-  text-align: left;
+
+.attachment-info {
+  flex: 1;
 }
-.comments {
-  max-width: 37rem;
-  text-align: left;
-  margin: 10px auto;
-  line-height: 1.3rem;
+
+.attachment-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.125rem;
 }
-.comment {
+
+.attachment-meta {
+  font-size: 0.8125rem;
+  color: #a3aec1;
+}
+
+.attachment-actions {
   display: flex;
-  gap: 2rem;
+  gap: 0.5rem;
 }
 
-input[type="file"] {
-  display: none;
-}
-
-.custom-btn {
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 0.375rem;
+  border: 1px solid #e4e7eb;
+  background: #ffffff;
   display: flex;
   align-items: center;
-  flex-grow: 1;
-}
-.btn-submit {
-  color: white;
-  padding: 25px;
-  background: rgb(80, 120, 254);
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #a3aec1;
 }
 
-input:focus {
+.icon-btn:hover {
+  background: #f5f7fa;
+  border-color: #5f6cff;
+  color: #5f6cff;
+}
+
+/* Comment Input */
+.comment-input-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e4e7eb;
+  background: #ffffff;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e4e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  color: #2c3e50;
   outline: none;
-}
-input::placeholder {
-  font-size: 1rem;
+  transition: all 0.2s;
 }
 
-.f-label {
-  border-left: 1px solid rgb(219, 214, 214);
-  padding: 28px;
-  background: rgb(241, 242, 247);
+.comment-input:focus {
+  border-color: #5f6cff;
+  box-shadow: 0 0 0 3px rgba(95, 108, 255, 0.1);
 }
-.message {
-  max-height: 380px;
-  overflow: auto;
+
+.comment-input::placeholder {
+  color: #a3aec1;
 }
-.message::-webkit-scrollbar {
-  width: 5px;
-}
-.message::-webkit-scrollbar-track {
-  background: rgb(241, 242, 247);
-}
-.message::-webkit-scrollbar-thumb {
-  background: rgb(209, 207, 207);
-}
-button {
-  box-shadow: var(--light-shadow);
-  transition: all 0.3s;
-}
-button:hover {
-  background: blue;
-  transform: translateY(-2px);
-}
-button:active {
-  transform: translateY(2px);
-}
-.tag {
+
+.attach-btn,
+.send-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 0.5rem;
+  border: none;
   display: flex;
-  justify-content: baseline;
   align-items: center;
-  text-align: center;
-  margin-left: 2rem;
-}
-.tag input[type="text"] {
-  border: none;
-  background: rgb(241, 242, 247);
-  border-radius: 20px;
-  padding: 5px 10px;
-  width: 30%;
-  box-shadow: var(--light-shadow);
-  transition: var(--transition);
-  height: 2rem;
-  margin-block: 1rem;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
-.tag-user p {
-  background: rgb(80, 120, 254);
-  display: inline-block;
-  border-radius: var(--radius);
-  color: white;
-  letter-spacing: var(--spacing);
-  box-shadow: var(--light-shadow);
+.attach-btn {
+  background: #f5f7fa;
+  color: #a3aec1;
 }
-.t {
-  background: rgb(80, 120, 254);
-  color: white;
-  border-radius: 50%;
-  text-align: center;
-  border: none;
+
+.attach-btn:hover {
+  background: #e4e7eb;
+  color: #2c3e50;
+}
+
+.send-btn {
+  background: #5f6cff;
+  color: #ffffff;
+}
+
+.send-btn:hover {
+  background: #4c5aee;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(95, 108, 255, 0.3);
+}
+
+/* Scrollbar */
+.task-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.task-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-body::-webkit-scrollbar-thumb {
+  background: #e4e7eb;
+  border-radius: 3px;
+}
+
+.task-body::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e0;
 }
 </style>

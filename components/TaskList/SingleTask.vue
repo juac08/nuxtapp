@@ -1,94 +1,209 @@
 <template>
-  <div class="container-task">
-    <ul>
-      <transition name="fade" appear>
-        <li class="list" :class="[isDone && 'completed ']" @click="select">
-          <div
-            v-html="$feathericons['check'].toSvg()"
-            class="icon"
-            :class="[project.completed && 'changeColor']"
-            @click="done"
-          ></div>
-          <div class="content">
-            <h5>{{ project.title }}</h5>
-            <p>{{ project.date }}</p>
-          </div>
-          <div>
-            <img :src="project.url" :alt="project.cat" class="image" />
-          </div>
-        </li>
-      </transition>
-    </ul>
+  <div
+    class="task-card"
+    :class="{ selected: selected, completed: project.completed }"
+    @click="select"
+  >
+    <!-- Checkbox -->
+    <div class="task-checkbox" @click.stop="done">
+      <input
+        type="checkbox"
+        :checked="project.completed"
+        @change="done"
+        class="checkbox-input"
+      />
+      <div class="checkbox-custom">
+        <svg
+          v-if="project.completed"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Task Content -->
+    <div class="task-content">
+      <p class="task-title">{{ project.title }}</p>
+      <div class="task-meta">
+        <span class="meta-date">{{ project.date }}</span>
+        <span v-if="project.user" class="meta-divider">•</span>
+        <span v-if="project.user" class="meta-count">7/12</span>
+      </div>
+    </div>
+
+    <!-- Avatar -->
+    <div class="task-avatar">
+      <img
+        :src="`https://i.pravatar.cc/150?img=${project.id}`"
+        alt="User avatar"
+      />
+    </div>
   </div>
 </template>
+
 <script>
+import { useMainStore } from "~/stores/main";
+
 export default {
   props: ["project"],
   data() {
     return {
-      isDone: false,
-      selected: false,
+      store: useMainStore(),
     };
+  },
+  computed: {
+    selected() {
+      return this.store?.selected === this.project.id;
+    },
   },
   methods: {
     done() {
-      return this.$store.dispatch("setSelectFilter", this.project.id);
+      if (this.store) {
+        this.store.setSelectFilter(this.project.id);
+      }
     },
     select() {
-      this.isDone = !this.isDone;
-      this.$store.dispatch("setSelected", this.project.id);
+      if (this.store) {
+        this.store.setSelected(this.project.id);
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-.image {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  border: 2px solid rgb(4, 236, 236);
-  object-fit: cover;
-}
-.icon {
-  background: #ffffff;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 42px;
-  vertical-align: middle;
-  text-align: center;
-  border: 1px solid rgb(122, 121, 121);
-  color: rgb(164, 165, 166);
-  box-shadow: var(--light-shadow);
-}
-.content {
+.task-card {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-grow: 1;
-  align-self: auto;
-  margin-top: 2rem;
-}
-.list {
-  display: flex;
-  justify-content: baseline;
   align-items: center;
-  align-self: center;
-  gap: 1.3rem;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.task-card:hover {
+  background: #f8f9fa;
+  transform: translateX(2px);
+}
+
+.task-card.selected {
+  border-color: #5f6cff;
+  background: rgba(95, 108, 255, 0.03);
+}
+
+.task-card.completed {
+  opacity: 0.6;
+}
+
+.task-card.completed .task-title {
+  text-decoration: line-through;
+  color: #a3aec1;
+}
+
+/* Checkbox */
+.task-checkbox {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.checkbox-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
   width: 100%;
-  height: 6.9rem;
-  padding: 18px 40px;
-  background: rgb(241, 242, 247);
-  border-bottom: 1px solid rgb(215, 215, 215);
-  box-shadow: var(--light-shadow);
+  height: 100%;
+  z-index: 1;
 }
-.completed {
-  background-color: #ffffff;
+
+.checkbox-custom {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #e4e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  transition: all 0.2s ease;
 }
-.changeColor {
-  color: white;
-  background: rgb(80, 120, 254);
+
+.checkbox-input:checked ~ .checkbox-custom {
+  background: #5f6cff;
+  border-color: #5f6cff;
+}
+
+.checkbox-custom svg {
+  color: #ffffff;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.2s ease;
+}
+
+.checkbox-input:checked ~ .checkbox-custom svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.task-checkbox:hover .checkbox-custom {
+  border-color: #5f6cff;
+}
+
+/* Task Content */
+.task-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title {
+  font-size: 0.9375rem;
+  color: #2c3e50;
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #a3aec1;
+}
+
+.meta-divider {
+  color: #e4e7eb;
+}
+
+.meta-count {
+  font-weight: 500;
+}
+
+/* Avatar */
+.task-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid #f5f7fa;
+}
+
+.task-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>
