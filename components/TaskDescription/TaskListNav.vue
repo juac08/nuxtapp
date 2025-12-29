@@ -1,44 +1,62 @@
 <template>
   <div class="task-nav">
     <!-- User Info -->
-    <div class="user-info">
+    <div class="user-info" v-if="assignedUser">
       <div class="user-avatar">
-        <img
-          src="https://i.pravatar.cc/150?img=5"
-          alt="User"
-        />
+        <img :src="assignedUser.avatar" :alt="assignedUser.name" />
       </div>
-      <span class="user-name">Natalie Smith</span>
+      <span class="user-name">{{ assignedUser.name }}</span>
     </div>
 
     <!-- Action Buttons -->
     <div class="action-buttons">
-      <button class="action-btn" title="Delete">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <button class="action-btn" title="Edit Task" @click="editTask">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+          ></path>
+          <path
+            d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+          ></path>
+        </svg>
+      </button>
+      <button class="action-btn danger" title="Delete Task" @click="deleteTask">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          <path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          ></path>
         </svg>
       </button>
-      <button class="action-btn" title="User">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-      </button>
-      <button class="action-btn" title="Attachment">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-        </svg>
-      </button>
-      <button class="action-btn primary" title="Approve">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <button
+        class="action-btn success"
+        title="Approve Task"
+        @click="approveTask"
+        v-if="selectedProject && !selectedProject.approved"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-      </button>
-      <button class="action-btn" title="Tags">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-          <line x1="7" y1="7" x2="7.01" y2="7"></line>
         </svg>
       </button>
     </div>
@@ -46,7 +64,43 @@
 </template>
 
 <script>
-export default {};
+import { useMainStore } from "~/stores/main";
+
+export default {
+  data() {
+    return {
+      store: useMainStore(),
+    };
+  },
+  computed: {
+    selectedProject() {
+      return this.store?.selectedProject || null;
+    },
+    assignedUser() {
+      if (this.selectedProject && this.selectedProject.assignedTo) {
+        return this.store.getTeamMemberById(this.selectedProject.assignedTo);
+      }
+      return null;
+    },
+  },
+  methods: {
+    editTask() {
+      if (this.selectedProject) {
+        this.$emit("edit-task", this.selectedProject);
+      }
+    },
+    deleteTask() {
+      if (this.selectedProject) {
+        this.store.remove(this.selectedProject.id);
+      }
+    },
+    approveTask() {
+      if (this.selectedProject) {
+        this.store.setApprove(this.selectedProject.id);
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -110,6 +164,27 @@ export default {};
   background: #f5f7fa;
   border-color: #5f6cff;
   color: #5f6cff;
+}
+
+.action-btn.success {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.action-btn.success:hover {
+  background: #059669;
+}
+
+.action-btn.danger {
+  border-color: #e4e7eb;
+  color: #a3aec1;
+}
+
+.action-btn.danger:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #ef4444;
 }
 
 .action-btn.primary {

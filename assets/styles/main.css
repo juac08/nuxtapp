@@ -23,3 +23,66 @@ body {
   width: 100%;
   min-height: 100vh;
 }
+
+/* Custom Scrollbar - Modern Design */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #e5e7eb transparent;
+}
+
+/* Toast Notification Styles */
+.Vue-Toastification__toast {
+  font-family: "Inter", sans-serif;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 1rem 1.25rem;
+}
+
+.Vue-Toastification__toast--success {
+  background-color: #10b981;
+}
+
+.Vue-Toastification__toast--error {
+  background-color: #ef4444;
+}
+
+.Vue-Toastification__toast--warning {
+  background-color: #f59e0b;
+}
+
+.Vue-Toastification__toast--info {
+  background-color: #5f6cff;
+}
+
+.Vue-Toastification__toast-body {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.Vue-Toastification__progress-bar {
+  height: 3px;
+}

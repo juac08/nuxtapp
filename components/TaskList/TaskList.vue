@@ -1,7 +1,33 @@
 <template>
   <div class="task-list-container">
+    <!-- Empty State -->
+    <div v-if="Object.keys(groupedTasks).length === 0" class="empty-state">
+      <svg
+        width="64"
+        height="64"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        class="empty-icon"
+      >
+        <path d="M9 11l3 3L22 4"></path>
+        <path
+          d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+        ></path>
+      </svg>
+      <h3 class="empty-title">No tasks found</h3>
+      <p class="empty-description">
+        {{
+          searchQuery || filterStatus !== "all"
+            ? "Try adjusting your filters or search query"
+            : "Create your first task to get started"
+        }}
+      </p>
+    </div>
+
     <!-- Grouped Tasks -->
-    <div class="task-groups">
+    <div class="task-groups" v-else>
       <div
         v-for="(tasks, category) in groupedTasks"
         :key="category"
@@ -39,7 +65,7 @@
 
     <!-- Add Task Button -->
     <div class="add-task-section">
-      <button class="add-task-btn" @click="addtask">
+      <button class="add-task-btn" @click="openAddTaskModal">
         <svg
           width="20"
           height="20"
@@ -54,16 +80,21 @@
         Add task
       </button>
     </div>
+
+    <!-- Add Task Modal -->
+    <AddTaskModal :isOpen="showAddTaskModal" @close="closeAddTaskModal" />
   </div>
 </template>
 
 <script>
 import SingleTask from "~/components/TaskList/SingleTask.vue";
+import AddTaskModal from "~/components/Model/AddTaskModal.vue";
 import { useMainStore } from "~/stores/main";
 
 export default {
   components: {
     SingleTask,
+    AddTaskModal,
   },
   props: {
     searchQuery: {
@@ -78,6 +109,7 @@ export default {
   data() {
     return {
       store: useMainStore(),
+      showAddTaskModal: false,
       expandedGroups: {
         marketing: true,
         design: true,
@@ -91,6 +123,12 @@ export default {
       if (!this.store) return [];
 
       let tasks = this.store.pList || [];
+
+      // Apply category filter
+      const selectedCategory = this.store.getSelectedCategory;
+      if (selectedCategory) {
+        tasks = tasks.filter((task) => task.cat === selectedCategory);
+      }
 
       // Apply search filter
       if (this.searchQuery) {
@@ -138,8 +176,11 @@ export default {
     toggleGroup(category) {
       this.expandedGroups[category] = !this.expandedGroups[category];
     },
-    addtask() {
-      return this.$router.push("/addnewtask");
+    openAddTaskModal() {
+      this.showAddTaskModal = true;
+    },
+    closeAddTaskModal() {
+      this.showAddTaskModal = false;
     },
   },
 };
@@ -154,15 +195,46 @@ export default {
   overflow: hidden;
 }
 
+/* Empty State */
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-icon {
+  color: #cbd5e0;
+  margin-bottom: 1rem;
+}
+
+.empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-description {
+  font-size: 0.875rem;
+  color: #a3aec1;
+  margin: 0;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
 /* Task Groups */
 .task-groups {
   flex: 1;
   overflow-y: auto;
-  padding: 1.5rem;
+  padding: 0.875rem 1rem;
 }
 
 .task-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .task-group:last-child {
@@ -173,10 +245,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
+  padding: 0.375rem 0.5rem;
   cursor: pointer;
   transition: all 0.2s;
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
+  margin-bottom: 0.375rem;
 }
 
 .group-header:hover {
@@ -190,7 +263,7 @@ export default {
 }
 
 .chevron {
-  color: #a3aec1;
+  color: #9ca3af;
   transition: transform 0.2s;
 }
 
@@ -199,18 +272,18 @@ export default {
 }
 
 .group-title {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 700;
-  color: #2c3e50;
-  letter-spacing: 0.05em;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   margin: 0;
 }
 
 .task-items {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  gap: 0;
 }
 
 /* Add Task Section */
@@ -260,23 +333,5 @@ export default {
 .expand-leave-from {
   opacity: 1;
   max-height: 2000px;
-}
-
-/* Scrollbar */
-.task-groups::-webkit-scrollbar {
-  width: 6px;
-}
-
-.task-groups::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.task-groups::-webkit-scrollbar-thumb {
-  background: #e4e7eb;
-  border-radius: 3px;
-}
-
-.task-groups::-webkit-scrollbar-thumb:hover {
-  background: #cbd5e0;
 }
 </style>
