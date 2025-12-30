@@ -154,8 +154,9 @@
         placeholder="Write a comment..."
         class="comment-input"
         @keyup.enter="addComment"
+        :disabled="isSubmittingComment"
       />
-      <button class="attach-btn">
+      <button class="attach-btn" :disabled="isSubmittingComment">
         <svg
           width="20"
           height="20"
@@ -169,8 +170,14 @@
           ></path>
         </svg>
       </button>
-      <button class="send-btn" @click="addComment">
+      <button
+        class="send-btn"
+        @click="addComment"
+        :disabled="isSubmittingComment"
+      >
+        <LoadingSpinner v-if="isSubmittingComment" size="small" inline />
         <svg
+          v-else
           width="20"
           height="20"
           viewBox="0 0 24 24"
@@ -188,13 +195,18 @@
 
 <script>
 import { useMainStore } from "~/stores/main";
+import LoadingSpinner from "~/components/UI/LoadingSpinner.vue";
 
 export default {
+  components: {
+    LoadingSpinner,
+  },
   data() {
     return {
       comment: "",
       store: useMainStore(),
       showComments: false,
+      isSubmittingComment: false,
     };
   },
   computed: {
@@ -237,17 +249,23 @@ export default {
     },
     addComment() {
       if (this.comment.trim() && this.selectedProject) {
-        this.store.setComment({
-          id: this.selectedProject.id,
-          comment: this.comment,
-          user: this.store.getCurrentUser.name,
-          date: new Date().toLocaleDateString("en-US", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          }),
-        });
-        this.comment = "";
+        this.isSubmittingComment = true;
+
+        setTimeout(() => {
+          this.store.setComment({
+            id: this.selectedProject.id,
+            comment: this.comment,
+            user: this.store.getCurrentUser.name,
+            date: new Date().toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            }),
+          });
+          this.comment = "";
+          this.isSubmittingComment = false;
+          this.showComments = true; // Open comments section after adding
+        }, 500);
       }
     },
   },
@@ -396,17 +414,18 @@ export default {
 .comment-input {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 1px solid #e4e7eb;
+  border: 1.5px solid #e4e7eb;
   border-radius: 0.5rem;
   font-size: 0.9375rem;
   color: #2c3e50;
   outline: none;
   transition: all 0.2s;
+  background: #f9fafb;
 }
 
 .comment-input:focus {
   border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(95, 108, 255, 0.1);
+  background: #ffffff;
 }
 
 .comment-input::placeholder {

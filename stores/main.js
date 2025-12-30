@@ -3,6 +3,10 @@ import { useToast } from "vue-toastification";
 
 export const useMainStore = defineStore("main", {
   state: () => ({
+    // Loading State
+    isLoading: true,
+    loadingMessage: "Loading your workspace...",
+
     // User Profile
     currentUser: {
       name: "Natalie Smith",
@@ -473,6 +477,10 @@ export const useMainStore = defineStore("main", {
   }),
 
   getters: {
+    // Get loading state
+    isAppLoading: (state) => state.isLoading,
+    getLoadingMessage: (state) => state.loadingMessage,
+
     // Get project list
     pList: (state) => state.projectList,
 
@@ -853,6 +861,37 @@ export const useMainStore = defineStore("main", {
       if (toast) {
         toast.success("All notifications cleared");
       }
+    },
+
+    // Initialize app (simulate loading data)
+    async initializeApp() {
+      this.isLoading = true;
+      this.loadingMessage = "Loading your workspace...";
+
+      try {
+        // Simulate fetching data from an API
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        // Data is already in state, but in a real app you would fetch it here
+        // Example:
+        // const response = await fetch('/api/tasks');
+        // this.projectList = await response.json();
+
+        this.isLoading = false;
+      } catch (error) {
+        console.error("Error initializing app:", error);
+        this.isLoading = false;
+        const toast = this.getToast();
+        if (toast) {
+          toast.error("Failed to load data. Please refresh the page.");
+        }
+      }
+    },
+
+    // Set loading state manually
+    setLoading(status, message = "Loading...") {
+      this.isLoading = status;
+      this.loadingMessage = message;
     },
   },
 });

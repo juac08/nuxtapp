@@ -6,9 +6,13 @@
   >
     <!-- Checkbox -->
     <div class="task-checkbox" @click.stop="done">
-      <div class="checkbox-custom" :class="{ checked: project.completed }">
+      <div
+        class="checkbox-custom"
+        :class="{ checked: project.completed, loading: isToggling }"
+      >
+        <LoadingSpinner v-if="isToggling" size="small" inline />
         <svg
-          v-if="project.completed"
+          v-else-if="project.completed"
           width="12"
           height="12"
           viewBox="0 0 24 24"
@@ -56,12 +60,17 @@
 
 <script>
 import { useMainStore } from "~/stores/main";
+import LoadingSpinner from "~/components/UI/LoadingSpinner.vue";
 
 export default {
+  components: {
+    LoadingSpinner,
+  },
   props: ["project"],
   data() {
     return {
       store: useMainStore(),
+      isToggling: false,
     };
   },
   computed: {
@@ -77,8 +86,13 @@ export default {
   },
   methods: {
     done() {
-      if (this.store && this.project) {
-        this.store.toggleTaskCompletion(this.project.id);
+      if (this.store && this.project && !this.isToggling) {
+        this.isToggling = true;
+
+        setTimeout(() => {
+          this.store.toggleTaskCompletion(this.project.id);
+          this.isToggling = false;
+        }, 400);
       }
     },
     select() {
@@ -153,6 +167,11 @@ export default {
   justify-content: center;
   background: #ffffff;
   transition: all 0.2s ease;
+}
+
+.checkbox-custom.loading {
+  border-color: #0ea5e9;
+  pointer-events: none;
 }
 
 .checkbox-custom.checked {

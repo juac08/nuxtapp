@@ -318,14 +318,27 @@ export default {
 }
 
 .form-group input:focus,
-.form-group select:focus {
+form-group select:focus {
   outline: none;
   border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(95, 108, 255, 0.1);
+  background: #fff;
 }
 
 .multi-select {
   min-height: 80px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: #f9fafb;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  color: #2c3e50;
+  font-family: inherit;
+}
+
+.multi-select:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  background: #fff;
 }
 
 .hint {

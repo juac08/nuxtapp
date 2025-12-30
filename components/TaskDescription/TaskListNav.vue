@@ -1,7 +1,15 @@
 <template>
   <div class="task-nav">
+    <!-- Loading Overlay for actions -->
+    <LoadingSpinner
+      v-if="isLoading"
+      inline
+      size="small"
+      :message="loadingMessage"
+    />
+
     <!-- User Info -->
-    <div class="user-info" v-if="assignedUser">
+    <div class="user-info" v-if="assignedUser && !isLoading">
       <div class="user-avatar">
         <img :src="assignedUser.avatar" :alt="assignedUser.name" />
       </div>
@@ -9,7 +17,7 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="action-buttons">
+    <div class="action-buttons" v-if="!isLoading">
       <button class="action-btn" title="Edit Task" @click="editTask">
         <svg
           width="18"
@@ -65,11 +73,17 @@
 
 <script>
 import { useMainStore } from "~/stores/main";
+import LoadingSpinner from "~/components/UI/LoadingSpinner.vue";
 
 export default {
+  components: {
+    LoadingSpinner,
+  },
   data() {
     return {
       store: useMainStore(),
+      isLoading: false,
+      loadingMessage: "",
     };
   },
   computed: {
@@ -91,12 +105,24 @@ export default {
     },
     deleteTask() {
       if (this.selectedProject) {
-        this.store.remove(this.selectedProject.id);
+        this.isLoading = true;
+        this.loadingMessage = "Deleting...";
+
+        setTimeout(() => {
+          this.store.remove(this.selectedProject.id);
+          this.isLoading = false;
+        }, 600);
       }
     },
     approveTask() {
       if (this.selectedProject) {
-        this.store.setApprove(this.selectedProject.id);
+        this.isLoading = true;
+        this.loadingMessage = "Approving...";
+
+        setTimeout(() => {
+          this.store.setApprove(this.selectedProject.id);
+          this.isLoading = false;
+        }, 600);
       }
     },
   },

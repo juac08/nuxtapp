@@ -1,6 +1,13 @@
 <template>
   <ClientOnly>
-    <div class="app-container">
+    <!-- Loading Screen -->
+    <LoadingScreen
+      v-if="store.isAppLoading"
+      :message="store.getLoadingMessage"
+    />
+
+    <!-- Main App -->
+    <div v-else class="app-container">
       <!-- Top Header -->
       <div class="app-header">
         <div class="header-left">
@@ -125,6 +132,7 @@ import ManageTeamModal from "~/components/Model/ManageTeamModal.vue";
 import ManageDepartmentsModal from "~/components/Model/ManageDepartmentsModal.vue";
 import SettingsModal from "~/components/Model/SettingsModal.vue";
 import MessagesModal from "~/components/Model/MessagesModal.vue";
+import LoadingScreen from "~/components/UI/LoadingScreen.vue";
 import { useMainStore } from "~/stores/main";
 
 export default {
@@ -136,6 +144,7 @@ export default {
     ManageDepartmentsModal,
     SettingsModal,
     MessagesModal,
+    LoadingScreen,
   },
   data() {
     return {
@@ -147,6 +156,10 @@ export default {
       showSettingsModal: false,
       showMessagesModal: false,
     };
+  },
+  mounted() {
+    // Initialize the app and load data
+    this.store.initializeApp();
   },
   methods: {
     handleSearch() {
@@ -269,7 +282,6 @@ export default {
 .search-box:focus-within {
   background: #ffffff;
   border-color: #0ea5e9;
-  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
 }
 
 .search-box svg {

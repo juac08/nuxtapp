@@ -1,6 +1,9 @@
 <template>
   <transition name="modal">
     <div v-if="isOpen" class="modal-overlay" @click.self="closeModal">
+      <!-- Loading Overlay -->
+      <LoadingSpinner v-if="isLoading" overlay message="Adding task..." />
+
       <div class="modal-container">
         <div class="modal-header">
           <h3 class="modal-title">Add New Task</h3>
@@ -117,8 +120,12 @@
 
 <script>
 import { useMainStore } from "~/stores/main";
+import LoadingSpinner from "~/components/UI/LoadingSpinner.vue";
 
 export default {
+  components: {
+    LoadingSpinner,
+  },
   props: {
     isOpen: {
       type: Boolean,
@@ -129,6 +136,7 @@ export default {
   data() {
     return {
       store: useMainStore(),
+      isLoading: false,
       form: {
         title: "",
         description: "",
@@ -178,34 +186,41 @@ export default {
         return;
       }
 
-      const newTask = {
-        id: Date.now(),
-        title: this.form.title,
-        description: this.form.description || "No description provided",
-        cat: this.form.category,
-        assignedTo: this.form.assignedTo || 1,
-        priority: this.form.priority,
-        date: this.form.dueDate || new Date().toISOString().split("T")[0],
-        completed: false,
-        approved: false,
-        tags: [],
-        comments: [],
-        activities: [
-          {
-            user: this.store.getCurrentUser.name,
-            type: "created",
-            date: new Date().toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            }),
-          },
-        ],
-      };
+      this.isLoading = true;
 
-      this.store.setProject(newTask);
-      this.store.setSelected(newTask.id);
-      this.closeModal();
+      // Simulate API call delay
+      setTimeout(() => {
+        const newTask = {
+          id: Date.now(),
+          title: this.form.title,
+          description: this.form.description || "No description provided",
+          cat: this.form.category,
+          assignedTo: this.form.assignedTo || 1,
+          priority: this.form.priority,
+          date: this.form.dueDate || new Date().toISOString().split("T")[0],
+          completed: false,
+          approved: false,
+          tags: [],
+          comments: [],
+          activities: [
+            {
+              user: this.store.getCurrentUser.name,
+              type: "created",
+              date: new Date().toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }),
+            },
+          ],
+        };
+
+        this.store.setProject(newTask);
+        this.store.setSelected(newTask.id);
+
+        this.isLoading = false;
+        this.closeModal();
+      }, 800); // Simulate network delay
     },
   },
 };
@@ -333,8 +348,8 @@ export default {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(95, 108, 255, 0.1);
+  border: 1.5px solid #0ea5e9;
+  background: #fff;
 }
 
 .form-group textarea {

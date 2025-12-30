@@ -329,7 +329,7 @@ export default {
 .form-group input[type="text"]:focus {
   outline: none;
   border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(95, 108, 255, 0.1);
+  background: #fff;
 }
 
 .color-input {
